@@ -1,33 +1,35 @@
 <script>
-    import { Button, ButtonGroup, Card, Input, Select } from "flowbite-svelte";
+    import { Button, Card, Helper, Input, Select } from "flowbite-svelte";
     import { tasks } from "../stores/store";
-    // let { id, task, status } = $tasks[0];
+
+    const statusList = [ 'Done', 'In Progress', 'To Start'];
 
     let select = '';
     let value = '';
-    const statusList = [ 'Done', 'In Progress', 'To Start'];
+    let message = '';
 
     let keyPressed = false;
     let idIsSet = false;
     let taskId = Number('');
 
     const handleInputChange = ({ target }) => {
-    const { name, value } = target;
-    if (!idIsSet) {
-        taskId = $tasks.length;
-        idIsSet = true;
-    }
-    if (name === 'input') {
-        if (!keyPressed) {
-            let newTask = {
-                id: taskId,
-                task: value,
-                status: '',
-                editing: false,
-            }
-            tasks.update(( prevTasks ) => ([...prevTasks, newTask]));
-            keyPressed = true;
+
+        const { name, value } = target;
+        if (!idIsSet) {
+            taskId = $tasks.length;
             idIsSet = true;
+        }
+        if (name === 'input') {
+            if (!keyPressed) {
+                let newTask = {
+                    id: taskId,
+                    task: value,
+                    status: '',
+                    editing: false,
+                }
+                tasks.update(( prevTasks ) => ([...prevTasks, newTask]));
+                keyPressed = true;
+                idIsSet = true;
         } else {
 
             let newTasks = $tasks.map(( task ) => ({
@@ -38,15 +40,19 @@
             tasks.set(newTasks)
         }
     }
-    if (name === 'select') {
-        console.log(name, value);
-        let newTasks = $tasks.map(( task ) => ({
-            ...task,
-            status: task.id === taskId ? value : task.status,
-        }))
+        if (name === 'select') {
+            console.log(name, value);
+            let newTasks = $tasks.map(( task ) => ({
+                ...task,
+                status: task.id === taskId ? value : task.status,
+            }))
 
-        tasks.set(newTasks);
-    }
+            tasks.set(newTasks);
+        }
+
+        if (value.length > 0 && select.length > 0) {
+            return message = "Don't forget to save changes"
+        }
     }
 
     const handleSubmit = () => {
@@ -54,22 +60,25 @@
         value = '';
         keyPressed = false;
         idIsSet = false;
+        message = '';
     }
 
 
 </script>
 
-<Card class="mx-auto">
-<form class="text-center mt-5" on:submit|preventDefault= { handleSubmit }>
+<Card class="mx-auto mt-5">
+<form class="text-center" on:submit|preventDefault= { handleSubmit }>
     <h2 class="font-bold mb-3">New task</h2>
-    <div class="mb-6">
+    <div class="mb-4">
         <Input id="success" placeholder='Buy groceries...' class="mb-4" name="input" on:input={(e) => handleInputChange(e) } bind:value/> 
             <Select bind:value={select} on:change={(e) => handleInputChange(e)} name='select'>
             { #each statusList as option }
             <option value={ option }> { option } </option>
             {/each }
         </Select>
-
+    </div>
+    <div class="mb-4">
+        <Helper>{ message }</Helper>
     </div>
         <Button type="submit" outline color="primary" class="mb-2">Add</Button>
     </form>
