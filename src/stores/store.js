@@ -1,8 +1,10 @@
-import { writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 
-export const task = writable({
+export const initialTask = writable({
     id: 0,
-    addTask: 'Buy bread',
+    task: 'Buy bread',
     status: 'In progress',
     editing: false,
 })
+
+export const tasks = derived(initialTask, ( $initialTask ) => [$initialTask]);

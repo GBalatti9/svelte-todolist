@@ -8,6 +8,9 @@
         TableHeadCell,
         Checkbox,
     } from "flowbite-svelte";
+
+    import { tasks } from "../stores/store";
+
 </script>
 
 <Table hoverable={true} shadow>
@@ -26,12 +29,13 @@
     </TableHead>
     <TableBody tableBodyClass="divide-y">
         <TableBodyRow>
+            { #each $tasks as task }             
             <TableBodyCell class="!p-4">
                 <Checkbox />
             </TableBodyCell>
-            <TableBodyCell>1</TableBodyCell>
-            <TableBodyCell>Apple MacBook Pro 17"</TableBodyCell>
-            <TableBodyCell>Sliver</TableBodyCell>
+            <TableBodyCell>{ task.id }</TableBodyCell>
+            <TableBodyCell>{ task.task }</TableBodyCell>
+            <TableBodyCell>{ task.status }</TableBodyCell>
             <TableBodyCell>
                 <a
                     href="/tables"
@@ -46,6 +50,7 @@
                     >Delete</a
                 >
             </TableBodyCell>
+            {/each }
         </TableBodyRow>
     </TableBody>
 </Table>
