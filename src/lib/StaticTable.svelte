@@ -28,8 +28,8 @@
         </TableHeadCell>
     </TableHead>
     <TableBody tableBodyClass="divide-y">
+        { #each $tasks as task }             
         <TableBodyRow>
-            { #each $tasks as task }             
             <TableBodyCell class="!p-4">
                 <Checkbox />
             </TableBodyCell>
@@ -50,7 +50,7 @@
                     >Delete</a
                 >
             </TableBodyCell>
-            {/each }
         </TableBodyRow>
+            {/each }
     </TableBody>
 </Table>
