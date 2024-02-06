@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.customGrid{
+    grid-template-columns: 1fr, 2fr;
+}
