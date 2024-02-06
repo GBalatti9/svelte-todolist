@@ -4,6 +4,7 @@
     // let { id, task, status } = $tasks[0];
 
     let select = '';
+    let value = '';
     const statusList = [ 'Done', 'In Progress', 'To Start'];
 
     let keyPressed = false;
@@ -33,7 +34,7 @@
                 ...task,
                 task: task.id === taskId ? value : task.task 
             }))
-
+            console.log('aca');
             tasks.set(newTasks)
         }
     }
@@ -49,16 +50,20 @@
     }
 
     const handleSubmit = () => {
+        select = '';
+        value = '';
+        keyPressed = false;
+        idIsSet = false;
     }
 
 
 </script>
 
+<Card class="mx-auto">
 <form class="text-center mt-5" on:submit|preventDefault= { handleSubmit }>
-    <Card class="mx-auto">
     <h2 class="font-bold mb-3">New task</h2>
     <div class="mb-6">
-        <Input id="success" placeholder='Buy groceries...' class="mb-4" name="input" on:input={(e) => handleInputChange(e) }/> 
+        <Input id="success" placeholder='Buy groceries...' class="mb-4" name="input" on:input={(e) => handleInputChange(e) } bind:value/> 
             <Select bind:value={select} on:change={(e) => handleInputChange(e)} name='select'>
             { #each statusList as option }
             <option value={ option }> { option } </option>
@@ -66,7 +71,7 @@
         </Select>
 
     </div>
-        <Button outline color="primary" class="mb-2">Add</Button>
-        <Button outline color="primary">Change view</Button>
-    </Card>
-</form>
+        <Button type="submit" outline color="primary" class="mb-2">Add</Button>
+    </form>
+    <Button outline color="primary">Change view</Button>
+</Card>
