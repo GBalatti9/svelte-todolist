@@ -14,12 +14,14 @@
     <TableHead>
         <TableHeadCell class="!p-4">
         </TableHeadCell>
-        <TableHeadCell>Product name</TableHeadCell>
-        <TableHeadCell>Color</TableHeadCell>
-        <TableHeadCell>Category</TableHeadCell>
-        <TableHeadCell>Price</TableHeadCell>
+        <TableHeadCell>#</TableHeadCell>
+        <TableHeadCell>Task</TableHeadCell>
+        <TableHeadCell>Status</TableHeadCell>
         <TableHeadCell>
             <span class="sr-only">Edit</span>
+        </TableHeadCell>
+        <TableHeadCell>
+            <span class="sr-only">Delete</span>
         </TableHeadCell>
     </TableHead>
     <TableBody tableBodyClass="divide-y">
@@ -27,10 +29,9 @@
             <TableBodyCell class="!p-4">
                 <Checkbox />
             </TableBodyCell>
+            <TableBodyCell>1</TableBodyCell>
             <TableBodyCell>Apple MacBook Pro 17"</TableBodyCell>
             <TableBodyCell>Sliver</TableBodyCell>
-            <TableBodyCell>Laptop</TableBodyCell>
-            <TableBodyCell>$2999</TableBodyCell>
             <TableBodyCell>
                 <a
                     href="/tables"
@@ -38,36 +39,11 @@
                     >Edit</a
                 >
             </TableBodyCell>
-        </TableBodyRow>
-        <TableBodyRow>
-            <TableBodyCell class="!p-4">
-                <Checkbox />
-            </TableBodyCell>
-            <TableBodyCell>Microsoft Surface Pro</TableBodyCell>
-            <TableBodyCell>White</TableBodyCell>
-            <TableBodyCell>Laptop PC</TableBodyCell>
-            <TableBodyCell>$1999</TableBodyCell>
             <TableBodyCell>
                 <a
                     href="/tables"
                     class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                    >Edit</a
-                >
-            </TableBodyCell>
-        </TableBodyRow>
-        <TableBodyRow>
-            <TableBodyCell class="!p-4">
-                <Checkbox />
-            </TableBodyCell>
-            <TableBodyCell>Magic Mouse 2</TableBodyCell>
-            <TableBodyCell>Black</TableBodyCell>
-            <TableBodyCell>Accessories</TableBodyCell>
-            <TableBodyCell>$99</TableBodyCell>
-            <TableBodyCell>
-                <a
-                    href="/tables"
-                    class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                    >Edit</a
+                    >Delete</a
                 >
             </TableBodyCell>
         </TableBodyRow>
