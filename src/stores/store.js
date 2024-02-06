@@ -1,12 +1,18 @@
 import { derived, writable } from "svelte/store";
 
-export const tasks = writable([
-    {
-        id: 0,
-        task: 'Buy bread',
-        status: 'In progress',
-        editing: false,
-    },
-])
+const getTasksFromLocalStorage = () => {
+    return JSON.parse(localStorage.getItem('tasks')) || [];
+}
 
-export const tasksDerived = derived(tasks, ( $tasks ) => $tasks);
+export const tasks = writable(getTasksFromLocalStorage());
+
+
+export const filterTasks = writable('');
+
+export const filterTasksList = derived( 
+    [ tasks, filterTasks ], ([ $tasks, $filterTasks ]) => {
+        return $tasks.filter(( task ) => (task.task).toLowerCase().includes(($filterTasks).toLowerCase()));
+
+    } )
+
+    // export const tasksDerived = derived(tasks, ( $tasks ) => $tasks);

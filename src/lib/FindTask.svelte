@@ -1,13 +1,17 @@
 <script>
-    import { Button, Input, Label } from "flowbite-svelte";
-    import { tasks } from "../stores/store";
+    import { Button, Card, Input, Label } from "flowbite-svelte";
+    import { tasks, filterTasks, filterTasksList } from "../stores/store";
 
-    let value = '';
+    let filterValue = ''
     const filteredTasks = () => {
-        console.log($tasks.filter(( task ) => task.task === value));
+        filterTasks.set(filterValue)
     }
 
 </script>
-<Label>Find Task</Label>
-<Input bind:value on:input={ filteredTasks }/>
-<Button>Search</Button>
+<Card class="mt-4">
+    <div class="mb-2">
+        <Label class="text-1xl">Find Task</Label>
+        <Input bind:value={ filterValue } placeholder='Search...' on:input={ filteredTasks }/>
+    </div>
+    <Button>Search</Button>
+</Card>

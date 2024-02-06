@@ -56,6 +56,7 @@
     }
 
     const handleSubmit = () => {
+        localStorage.setItem('tasks', JSON.stringify($tasks));
         select = '';
         value = '';
         keyPressed = false;

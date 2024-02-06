@@ -9,7 +9,7 @@
         Checkbox,
     } from "flowbite-svelte";
 
-    import { tasks } from "../stores/store";
+    import { tasks, filterTasksList } from "../stores/store";
 
 </script>
 
@@ -28,7 +28,7 @@
         </TableHeadCell>
     </TableHead>
     <TableBody tableBodyClass="divide-y">
-        { #each $tasks as task (task.id) }
+        { #each $filterTasksList as task (task.id) }
         
             <TableBodyRow key={ task.id }>
                 <TableBodyCell class="!p-4">
