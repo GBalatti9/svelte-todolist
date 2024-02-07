@@ -7,6 +7,7 @@
         TableHead,
         TableHeadCell,
         Checkbox,
+        Button,
     } from "flowbite-svelte";
 
     import { tasks, filterTasksList } from "../stores/store";
@@ -21,7 +22,11 @@
         tasks.set(newTasksStatus);
         localStorage.setItem('tasks', JSON.stringify($tasks));
     }
-
+    
+    const handleDelete = ( id ) => {
+        $tasks = $tasks.filter(( task ) => task.id !== id);
+        return localStorage.setItem('tasks', JSON.stringify($tasks));
+    }
 </script>
 
 <Table hoverable={true} shadow>
@@ -60,11 +65,9 @@
                     >
                 </TableBodyCell>
                 <TableBodyCell>
-                    <a
-                        href="/tables"
-                        class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                        >Delete</a
-                    >
+                    <Button on:click={() => handleDelete( task.id ) } class="font-medium text-primary-600 hover:underline dark:text-primary-500">
+                        Delete
+                    </Button>
                 </TableBodyCell>
             </TableBodyRow>
             {/each }
