@@ -10,6 +10,7 @@
         Button,
         Input,
         ButtonGroup,
+        Toast,
     } from "flowbite-svelte";
 
     import { tasks, filterTasksList } from "../stores/store";
@@ -91,7 +92,6 @@
     </TableHead>
     <TableBody tableBodyClass="divide-y cursor-pointer">
         { #each $filterTasksList as task (task.id) }
-        
             <TableBodyRow key={ task.id } class="{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" on:click={(e) => handleStatus(e, task.id, task.status)}>
                 <TableBodyCell>
                     { #if task.status === 'Done'}
@@ -107,7 +107,10 @@
                     </TableBodyCell>
 
                 { :else }
-                    <TableBodyCell style="max-width: 100px; overflow: hidden; text-overflow: ellipsis;">{task.task}</TableBodyCell>
+                    <TableBodyCell style="max-width: 100px; overflow: hidden; text-overflow:ellipsis">
+                        <!--  overflow-x:scroll; -->
+                        {task.task}
+                    </TableBodyCell>
                 {/if }
                 <TableBodyCell style="max-width:10px;">
                     <span 
@@ -150,4 +153,5 @@
         text-decoration: underline;
         text-decoration-color: red;
     }
+
 </style>
