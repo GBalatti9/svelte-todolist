@@ -46,7 +46,7 @@
         console.log({ name, value, task, id });
         let newTasksStatus = $tasks.map(( task ) => ({
             ...task,
-            [name]: task.id === id ? value : task.task
+            task: task.id === id ? value : task.task
         }))
         tasks.set(newTasksStatus);
         localStorage.setItem('tasks', JSON.stringify($tasks));
@@ -55,7 +55,7 @@
 
 <Table hoverable={true} shadow>
     <TableHead>
-        <TableHeadCell class="!p-4">
+        <TableHeadCell>
         </TableHeadCell>
         <TableHeadCell>#</TableHeadCell>
         <TableHeadCell>Task</TableHeadCell>
@@ -71,20 +71,25 @@
         { #each $filterTasksList as task (task.id) }
         
             <TableBodyRow key={ task.id } class="{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" on:click={(e) => handleStatus(e, task.id)}>
-                <TableBodyCell class="!p-4">
+                <TableBodyCell>
                     { #if task.status === 'Done'}
                         <Checkbox on:change={(e) => handleStatus(e, task.id) } checked class="cursor-pointer"/>
                     { :else }
                         <Checkbox on:change={(e) => handleStatus(e, task.id) } class="cursor-pointer"/>
                     { /if }
                 </TableBodyCell>
-                <TableBodyCell>{ task.id }</TableBodyCell>
+                <TableBodyCell style="width:10px;">{ task.id }</TableBodyCell>
                 { #if task.editing}
                     <Input value={ task.task } name="task" on:input={(e) => handleInput(e, task.task, task.id) }/>
                 { :else }
-                    <TableBodyCell>{ task.task }</TableBodyCell>
+                    <TableBodyCell style="max-width: 100px; overflow: hidden; text-overflow: ellipsis;">{task.task}</TableBodyCell>
                 {/if }
-                <TableBodyCell>{ task.status }</TableBodyCell>
+                <TableBodyCell style="max-width:10px;">
+                    <span 
+                        class:progress = { task.status === 'In Progress' } 
+                        class:done     = { task.status === 'Done' }
+                        class:start    = { task.status === 'To Start' }
+                        >{ task.status }</span></TableBodyCell>
                 <TableBodyCell>
                     <Button name="button" on:click={() => handleEdit( task.id ) }>
                         Edit
@@ -99,3 +104,18 @@
             {/each }
     </TableBody>
 </Table>
+
+<style>
+    .progress{
+        text-decoration: underline;
+        text-decoration-color: yellow;
+    }
+    .done{
+        text-decoration: underline;
+        text-decoration-color: green;
+    }
+    .start{
+        text-decoration: underline;
+        text-decoration-color: red;
+    }
+</style>

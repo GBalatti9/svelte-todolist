@@ -8,7 +8,7 @@
     }
 
 </script>
-<Card class="mt-4">
+<Card class="mt-4 mx-auto">
     <div class="mb-2">
         <Label class="text-1xl">Find Task</Label>
         <Input bind:value={ filterValue } placeholder='Search...' on:input={ filteredTasks }/>
