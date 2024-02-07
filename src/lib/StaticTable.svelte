@@ -14,9 +14,10 @@
     import { tasks, filterTasksList } from "../stores/store";
 
     const handleStatus = ({ target }, id) => {
-        if( target.name === 'button' || target.name === 'input') return;
+        if( target.name === 'button' || target.name === 'task') return;
         let newTasksStatus = $tasks.map(( task ) => ({
             ...task,
+            editing: task.id === id ? task.editing = false : task.edting,
             status: task.id === id ? task.status === 'Done' ? 'In Progress' : 'Done' : task.status,
         }))
 
@@ -40,9 +41,15 @@
         console.log(newTasksStatus);
     }
 
-    const handleInput = ({target}, task) => {
+    const handleInput = ({target}, task, id) => {
         const { name, value } = target;
-        console.log({ name, value, task });
+        console.log({ name, value, task, id });
+        let newTasksStatus = $tasks.map(( task ) => ({
+            ...task,
+            [name]: task.id === id ? value : task.task
+        }))
+        tasks.set(newTasksStatus);
+        localStorage.setItem('tasks', JSON.stringify($tasks));
     }
 </script>
 
@@ -73,7 +80,7 @@
                 </TableBodyCell>
                 <TableBodyCell>{ task.id }</TableBodyCell>
                 { #if task.editing}
-                    <Input value={ task.task } name="input" on:input={(e) => handleInput(e, task.task) }/>
+                    <Input value={ task.task } name="task" on:input={(e) => handleInput(e, task.task, task.id) }/>
                 { :else }
                     <TableBodyCell>{ task.task }</TableBodyCell>
                 {/if }
