@@ -11,6 +11,16 @@
 
     import { tasks, filterTasksList } from "../stores/store";
 
+    const handleStatus = ({ target }, id) => {
+        let newTasksStatus = $filterTasksList.map(( task ) => ({
+            ...task,
+            status: task.id === id ? 'Done' : task.status,
+        }))
+
+        tasks.set(newTasksStatus);
+        localStorage.setItem('tasks', JSON.stringify($tasks));
+    }
+
 </script>
 
 <Table hoverable={true} shadow>
@@ -32,7 +42,11 @@
         
             <TableBodyRow key={ task.id }>
                 <TableBodyCell class="!p-4">
-                    <Checkbox />
+                    { #if task.status === 'Done'}
+                        <Checkbox on:click={(e) => handleStatus(e, task.id) } checked/>
+                    { :else }
+                        <Checkbox on:click={(e) => handleStatus(e, task.id) }/>
+                    { /if }
                 </TableBodyCell>
                 <TableBodyCell>{ task.id }</TableBodyCell>
                 <TableBodyCell>{ task.task }</TableBodyCell>
