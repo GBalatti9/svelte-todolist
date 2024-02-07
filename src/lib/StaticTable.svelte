@@ -8,13 +8,14 @@
         TableHeadCell,
         Checkbox,
         Button,
+        Input,
     } from "flowbite-svelte";
 
     import { tasks, filterTasksList } from "../stores/store";
 
     const handleStatus = ({ target }, id) => {
-        console.log(target.value);
-        let newTasksStatus = $filterTasksList.map(( task ) => ({
+        if( target.name === 'button' || target.name === 'input') return;
+        let newTasksStatus = $tasks.map(( task ) => ({
             ...task,
             status: task.id === id ? task.status === 'Done' ? 'In Progress' : 'Done' : task.status,
         }))
@@ -26,6 +27,22 @@
     const handleDelete = ( id ) => {
         $tasks = $tasks.filter(( task ) => task.id !== id);
         return localStorage.setItem('tasks', JSON.stringify($tasks));
+    }
+
+    const handleEdit = ( id ) => {
+        let newTasksStatus = $tasks.map(( task ) => ({
+            ...task,
+            editing: task.id === id ? true : false
+        }))
+
+        tasks.set(newTasksStatus);
+        localStorage.setItem('tasks', JSON.stringify($tasks));
+        console.log(newTasksStatus);
+    }
+
+    const handleInput = ({target}, task) => {
+        const { name, value } = target;
+        console.log({ name, value, task });
     }
 </script>
 
@@ -55,17 +72,19 @@
                     { /if }
                 </TableBodyCell>
                 <TableBodyCell>{ task.id }</TableBodyCell>
-                <TableBodyCell>{ task.task }</TableBodyCell>
+                { #if task.editing}
+                    <Input value={ task.task } name="input" on:input={(e) => handleInput(e, task.task) }/>
+                { :else }
+                    <TableBodyCell>{ task.task }</TableBodyCell>
+                {/if }
                 <TableBodyCell>{ task.status }</TableBodyCell>
                 <TableBodyCell>
-                    <a
-                        href="/tables"
-                        class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                        >Edit</a
-                    >
+                    <Button name="button" on:click={() => handleEdit( task.id ) }>
+                        Edit
+                    </Button>
                 </TableBodyCell>
                 <TableBodyCell>
-                    <Button on:click={() => handleDelete( task.id ) } class="font-medium text-primary-600 hover:underline dark:text-primary-500">
+                    <Button name="button" on:click={() => handleDelete( task.id ) }>
                         Delete
                     </Button>
                 </TableBodyCell>
