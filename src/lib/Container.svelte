@@ -3,7 +3,7 @@
     import { Form, StaticTable, DinamicTable } from ".";
     import FindTask from "./FindTask.svelte";
 
-    let switchTable = true;
+    let switchTable = false;
 
 </script>
 <section class="w-11/12 mx-auto col-span-1">
