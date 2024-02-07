@@ -72,7 +72,7 @@
     <h2 class="font-bold mb-3">New task</h2>
     <div class="mb-4">
         <Input id="success" placeholder='Buy groceries...' class="mb-4" name="input" on:input={(e) => handleInputChange(e) } bind:value/> 
-            <Select bind:value={select} on:change={(e) => handleInputChange(e)} name='select'>
+            <Select bind:value={select} on:change={(e) => handleInputChange(e)} name='select' disabled={ value.length === 0 ? true : false }>
             { #each statusList as option }
             <option value={ option }> { option } </option>
             {/each }
