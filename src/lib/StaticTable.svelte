@@ -9,16 +9,19 @@
         Checkbox,
         Button,
         Input,
+        ButtonGroup,
     } from "flowbite-svelte";
 
     import { tasks, filterTasksList } from "../stores/store";
 
-    const handleStatus = ({ target }, id) => {
+    const handleStatus = ( { target }, id, actualStatus ) => {
         if( target.name === 'button' || target.name === 'task') return;
+        console.log({actualStatus});
         let newTasksStatus = $tasks.map(( task ) => ({
             ...task,
             editing: task.id === id ? task.editing = false : task.edting,
-            status: task.id === id ? task.status === 'Done' ? 'In Progress' : 'Done' : task.status,
+            status: task.id === id ? task.status === 'Done' ? 'In progress' : 'Done' : task.status,
+            // status: task.id === id ? task.status === 'Done' ? actualStatus : 'Done' : task.status,
         }))
 
         tasks.set(newTasksStatus);
@@ -51,6 +54,25 @@
         tasks.set(newTasksStatus);
         localStorage.setItem('tasks', JSON.stringify($tasks));
     }
+
+    const handleSave = ( id ) => {
+        let newTasksStatus = $tasks.map(( task ) => ({
+            ...task,
+            editing: task.id === id ? false : task.editing,
+        }))
+        tasks.set(newTasksStatus);
+        localStorage.setItem('tasks', JSON.stringify($tasks));
+    }
+
+    const handleClose = ( id ) => {
+        let newTasksStatus = $tasks.map(( task ) => ({
+            ...task,
+            editing: task.id === id ? false : task.editing,
+        }))
+        tasks.set(newTasksStatus);
+        localStorage.setItem('tasks', JSON.stringify($tasks));
+    }
+
 </script>
 
 <Table hoverable={true} shadow>
@@ -70,17 +92,20 @@
     <TableBody tableBodyClass="divide-y cursor-pointer">
         { #each $filterTasksList as task (task.id) }
         
-            <TableBodyRow key={ task.id } class="{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" on:click={(e) => handleStatus(e, task.id)}>
+            <TableBodyRow key={ task.id } class="{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" on:click={(e) => handleStatus(e, task.id, task.status)}>
                 <TableBodyCell>
                     { #if task.status === 'Done'}
-                        <Checkbox on:change={(e) => handleStatus(e, task.id) } checked class="cursor-pointer"/>
+                        <Checkbox on:change={(e) => handleStatus(e, task.id, task.status) } checked class="cursor-pointer"/>
                     { :else }
-                        <Checkbox on:change={(e) => handleStatus(e, task.id) } class="cursor-pointer"/>
+                        <Checkbox on:change={(e) => handleStatus(e, task.id, task.status) } class="cursor-pointer"/>
                     { /if }
                 </TableBodyCell>
                 <TableBodyCell style="width:10px;">{ task.id }</TableBodyCell>
                 { #if task.editing}
-                    <Input value={ task.task } name="task" on:input={(e) => handleInput(e, task.task, task.id) }/>
+                    <TableBodyCell style="max-width: 130px;">
+                        <Input value={ task.task } name="task" on:input={(e) => handleInput(e, task.task, task.id) } style="cursor:text"/>
+                    </TableBodyCell>
+
                 { :else }
                     <TableBodyCell style="max-width: 100px; overflow: hidden; text-overflow: ellipsis;">{task.task}</TableBodyCell>
                 {/if }
@@ -91,9 +116,16 @@
                         class:start    = { task.status === 'To Start' }
                         >{ task.status }</span></TableBodyCell>
                 <TableBodyCell>
-                    <Button name="button" on:click={() => handleEdit( task.id ) }>
-                        Edit
-                    </Button>
+                    { #if task.editing }
+                    <ButtonGroup>
+                        <Button name="button" outline color="primary" on:click={() => handleSave( task.id ) }>Save</Button>
+                        <Button name="button" outline color="primary" on:click={() => handleClose( task.id ) }>Close</Button>
+                    </ButtonGroup>
+                    { :else }
+                        <Button name="button" on:click={() => handleEdit( task.id ) }>
+                            Edit
+                        </Button>
+                    { /if }
                 </TableBodyCell>
                 <TableBodyCell>
                     <Button name="button" on:click={() => handleDelete( task.id ) }>
