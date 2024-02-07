@@ -12,9 +12,10 @@
     import { tasks, filterTasksList } from "../stores/store";
 
     const handleStatus = ({ target }, id) => {
+        console.log(target.value);
         let newTasksStatus = $filterTasksList.map(( task ) => ({
             ...task,
-            status: task.id === id ? 'Done' : task.status,
+            status: task.id === id ? task.status === 'Done' ? 'In Progress' : 'Done' : task.status,
         }))
 
         tasks.set(newTasksStatus);
@@ -37,15 +38,15 @@
             <span class="sr-only">Delete</span>
         </TableHeadCell>
     </TableHead>
-    <TableBody tableBodyClass="divide-y">
+    <TableBody tableBodyClass="divide-y cursor-pointer">
         { #each $filterTasksList as task (task.id) }
         
-            <TableBodyRow key={ task.id }>
+            <TableBodyRow key={ task.id } class="{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" on:click={(e) => handleStatus(e, task.id)}>
                 <TableBodyCell class="!p-4">
                     { #if task.status === 'Done'}
-                        <Checkbox on:click={(e) => handleStatus(e, task.id) } checked/>
+                        <Checkbox on:change={(e) => handleStatus(e, task.id) } checked class="cursor-pointer"/>
                     { :else }
-                        <Checkbox on:click={(e) => handleStatus(e, task.id) }/>
+                        <Checkbox on:change={(e) => handleStatus(e, task.id) } class="cursor-pointer"/>
                     { /if }
                 </TableBodyCell>
                 <TableBodyCell>{ task.id }</TableBodyCell>
