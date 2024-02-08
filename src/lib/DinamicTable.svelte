@@ -6,7 +6,7 @@
 
     let status = ["In Progress", "Done"];
 
-    $: tasksToStart = $tasks.filter( task => task.status === 'To Start' || task.status === '' );
+    $: tasksToStart = $tasks.filter( task => task.status === 'To Start' || task.status === '' ); // [{...}]
     $: inProgressTasks = $tasks.filter((task) => task.status === "In Progress"); // []
     $: doneTasks = $tasks.filter((task) => task.status === "Done"); // []
 
