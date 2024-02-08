@@ -14,6 +14,7 @@
     } from "flowbite-svelte";
 
     import { tasks, filterTasksList } from "../stores/store";
+    import { fade } from "svelte/transition";
 
     const handleStatus = ( { target }, id, actualStatus ) => {
         if( target.name === 'button' || target.name === 'task') return;
@@ -21,7 +22,7 @@
         let newTasksStatus = $tasks.map(( task ) => ({
             ...task,
             editing: task.id === id ? task.editing = false : task.edting,
-            status: task.id === id ? task.status === 'Done' ? 'In progress' : 'Done' : task.status,
+            status: task.id === id ? task.status === 'Done' ? 'In Progress' : 'Done' : task.status,
             // status: task.id === id ? task.status === 'Done' ? actualStatus : 'Done' : task.status,
         }))
 
@@ -76,7 +77,8 @@
 
 </script>
 
-<Table hoverable={true} shadow>
+<main>
+<Table hoverable={true} shadow >
     <TableHead>
         <TableHeadCell>
         </TableHeadCell>
@@ -139,6 +141,7 @@
             {/each }
     </TableBody>
 </Table>
+</main>
 
 <style>
     .progress{
