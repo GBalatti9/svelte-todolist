@@ -10,30 +10,17 @@
     $: inProgressTasks = $tasks.filter((task) => task.status === "In Progress"); // []
     $: doneTasks = $tasks.filter((task) => task.status === "Done"); // []
 
-    
-
-    const moveInProgress = (item) => {
+    const move = (item) => {
         let newTasks = $tasks.map(( task ) => ({
             ...task,
-            status: task.id === item.id ? 'In Progress' : task.status,
-        }))
-
-        tasks.set(newTasks);
-    }
-
-    const moveDone = (item) => {
-        let newTasks = $tasks.map(( task ) => ({
-            ...task,
-            status: task.id === item.id ? 'Done' : task.status,
-        }))
-
-        tasks.set(newTasks);
-    }
-
-    const moveToStart = (item) => {
-        let newTasks = $tasks.map(( task ) => ({
-            ...task,
-            status: task.id === item.id ? 'To Start' : task.status,
+            status: 
+                task.id === item.id 
+                    ? item.status === 'To Start'
+                    ? 'In Progress'
+                    : item.status === 'Done'
+                        ? 'To start'
+                        : 'Done'
+                    : task.status
         }))
 
         tasks.set(newTasks);
@@ -61,7 +48,7 @@
                     <Card
                         color="primary"
                         class="my-3 cursor-pointer"
-                        on:click={() => moveInProgress(task)}
+                        on:click={() => move(task)}
                     >
                         <h6 class="font-bold text-white-900 mb-2">
                             {task.task}
@@ -95,7 +82,7 @@
                             <Card
                                 color="primary"
                                 class="my-3 cursor-pointer"
-                                on:click={() => moveDone(task)}
+                                on:click={() => move(task)}
                             >
                             <h6 class="font-bold text-white-900 mb-2">
                                 {task.task}
@@ -121,7 +108,7 @@
                         <Card
                             color="primary"
                             class="my-3 cursor-pointer"
-                            on:click={() => moveToStart(task)}
+                            on:click={() => move(task)}
                         >
                         <h6 class="font-bold text-white-900 mb-2">
                             {task.task}
