@@ -1,41 +1,180 @@
 <script>
-    import { Card } from "flowbite-svelte";
+    import { Card, TableSearch } from "flowbite-svelte";
     import { tasks } from "../stores/store";
-    import { fade } from "svelte/transition";
+    import { crossfade, fade } from "svelte/transition";
+    import { flip } from "svelte/animate";
 
-    let status = ['In Progress', 'Done'];
+    let status = ["In Progress", "Done"];
 
+    $: tasksToStart = $tasks.filter( task => task.status === 'To Start' || task.status === '' );
+    $: inProgressTasks = $tasks.filter((task) => task.status === "In Progress"); // []
+    $: doneTasks = $tasks.filter((task) => task.status === "Done"); // []
+
+    
+
+    const moveInProgress = (item) => {
+        let newTasks = $tasks.map(( task ) => ({
+            ...task,
+            status: task.id === item.id ? 'In Progress' : task.status,
+        }))
+
+        tasks.set(newTasks);
+    }
+
+    const moveDone = (item) => {
+        let newTasks = $tasks.map(( task ) => ({
+            ...task,
+            status: task.id === item.id ? 'Done' : task.status,
+        }))
+
+        tasks.set(newTasks);
+    }
+
+    const moveToStart = (item) => {
+        let newTasks = $tasks.map(( task ) => ({
+            ...task,
+            status: task.id === item.id ? 'To Start' : task.status,
+        }))
+
+        tasks.set(newTasks);
+    }
+
+    const [send, receive] = crossfade({
+        duration: 2000,
+    });
 </script>
 
 <main class="grid grid-cols-3 text-center">
-    <Card class="min-h-screen drop-shadow-2xl w-10/12">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Tasks</h5>
-        { #each $tasks as task}    
-            <div transition:fade>
-                <Card color="primary" class="my-3 cursor-pointer">
-                    <h6 class="font-bold text-white-900">
-                        { task.task }
-                    </h6>
-                    <div>
-                        <button class="border border-primary-500 px-2 rounded btn">Edit</button>
-                        <button class="border border-primary-500 px-2 rounded">Delete</button>
-                    </div>
-                </Card>
+    <Card class="drop-shadow-xl w-10/12">
+        <h5
+            class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+            Tasks
+        </h5>
+        {#each tasksToStart as task (task.id)}
+            <div
+                in:receive={{ key: task.id }}
+                out:send={{ key: task.id }}
+                animate:flip
+            >
+                {#if task.status === "To Start" || task.status === ""}
+                    <Card
+                        color="primary"
+                        class="my-3 cursor-pointer"
+                        on:click={() => moveInProgress(task)}
+                    >
+                        <h6 class="font-bold text-white-900 mb-2">
+                            {task.task}
+                        </h6>
+                        <div>
+                            <button
+                                class="border border-primary-500 px-2 rounded btn"
+                                >Edit</button
+                            >
+                            <button
+                                class="border border-primary-500 px-2 rounded btn"
+                                >Delete</button
+                            >
+                        </div>
+                    </Card>
+                {/if}
             </div>
-        {/each }
+        {/each}
     </Card>
-    { #each status as item }
-        <Card class="drop-shadow-xl w-10/12">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{ item }</h5>
-        </Card>
+    {#each status as item}
+        <div>
+            <Card class="drop-shadow-xl w-10/12">
+                <h5
+                    class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                >
+                    {item}
+                </h5>
+                {#if item === "In Progress"}
+                    {#each inProgressTasks as task (task.id)}
+                        <div in:receive={{ key: task.id }} out:send={{ key: task.id }} animate:flip>
+                            <Card
+                                color="primary"
+                                class="my-3 cursor-pointer"
+                                on:click={() => moveDone(task)}
+                            >
+                            <h6 class="font-bold text-white-900 mb-2">
+                                {task.task}
+                            </h6>
+                            <div>
+                                <button
+                                    class="border border-primary-500 px-2 rounded btn"
+                                    >Edit</button
+                                >
+                                <button
+                                    class="border border-primary-500 px-2 rounded btn"
+                                    >Delete</button
+                                >
+                            </div>
+                            </Card>
+                        </div>
+                    {/each}
+                {/if}
+
+                {#if item === "Done"}
+                {#each doneTasks as task (task.id)}
+                    <div in:receive={{ key: task.id }} out:send={{ key: task.id }} animate:flip>
+                        <Card
+                            color="primary"
+                            class="my-3 cursor-pointer"
+                            on:click={() => moveToStart(task)}
+                        >
+                        <h6 class="font-bold text-white-900 mb-2">
+                            {task.task}
+                        </h6>
+                        <div>
+                            <button
+                                class="border border-primary-500 px-2 rounded btn"
+                                >Edit</button
+                            >
+                            <button
+                                class="border border-primary-500 px-2 rounded btn"
+                                >Delete</button
+                            >
+                        </div>
+                        </Card>
+                    </div>
+                {/each}
+            {/if}
+
+                <!-- {#each $tasks as task (task.id)}
+                    <div in:fade out:send={{ key: task.id }} animate:flip>
+                        {#if task.status === item}
+                            <Card
+                                color="primary"
+                                class="my-3 cursor-pointer"
+                                on:click={() => handleStatus(task.id, item)}
+                            >
+                                <h6 class="font-bold text-white-900 mb-2">
+                                    {task.task}
+                                </h6>
+                                <div>
+                                    <button
+                                        class="border border-primary-500 px-2 rounded btn"
+                                        >Edit</button
+                                    >
+                                    <button
+                                        class="border border-primary-500 px-2 rounded btn"
+                                        >Delete</button
+                                    >
+                                </div>
+                            </Card>
+                        {/if}
+                    </div>
+                {/each} -->
+            </Card>
+        </div>
     {/each}
 </main>
 
 <style>
-    .btn:hover{
+    .btn:hover {
         background-color: rgb(254, 121, 93);
         color: white;
-        transition: all 0.2 ease-in-out;
+        transition: all 0.2s ease-in-out;
     }
 </style>
-
