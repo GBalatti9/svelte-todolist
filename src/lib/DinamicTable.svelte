@@ -15,7 +15,6 @@
         console.log(id);
         return $tasks = $tasks.filter(( task ) => task.id !== id);
     }
-
 </script>
 
 <main class="grid grid-cols-3 text-center">
