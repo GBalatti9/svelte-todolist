@@ -25,6 +25,7 @@
                     : task.status
         }))
         tasks.set(newTasks);
+        localStorage.setItem('tasks', JSON.stringify($tasks));
     }
 </script>
 
@@ -36,12 +37,12 @@
     >
         { item }
     </h5>        
-        {#each tasksLists as task (task.id)}
+        {#each tasksLists as task ( task.id )}
             <div transition:fade animate:flip >
                     <Card
-                        color="primary"
-                        class="my-3 cursor-pointer"
-                        on:click={(e) => move(task, e)}
+                        color    = "primary"
+                        class    = "my-3 cursor-pointer"
+                        on:click = {( e ) => move( task, e )}
                     >
                         <h6 class="font-bold text-white-900 mb-2">
                             {task.task}
@@ -50,20 +51,24 @@
                             { #if task.editing }
                                 { #each status as item }
                                     <button 
-                                        class="border border-primary-500 px-2 rounded btn" 
-                                        name="button" 
-                                        on:click={() => onStatus(task.id, item) }
+                                        class    = "border border-primary-500 px-2 rounded btn" 
+                                        name     = "button" 
+                                        on:click = {() => onStatus( task.id, item )}
                                         >
-                                        {item}
+                                        { item }
                                     </button>
                                     { /each }
                             {:else}
                                 <button
-                                    class="border border-primary-500 px-2 rounded btn" name="button" on:click={() => onEdit(task.id)}
+                                    name     = "button" 
+                                    class    = "border border-primary-500 px-2 rounded btn" 
+                                    on:click = {() => onEdit( task.id )}
                                     >Edit</button
                                 >
                                 <button
-                                    class="border border-primary-500 px-2 rounded btn" name="button" on:click={() => onDelete(task.id) }
+                                    name     = "button" 
+                                    class    = "border border-primary-500 px-2 rounded btn" 
+                                    on:click = {() => onDelete( task.id )}
                                     >Delete</button
                                 >
                             { /if }

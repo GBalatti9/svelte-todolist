@@ -78,20 +78,22 @@
 </script>
 
 <main>
-<Table hoverable={true} shadow >
-    <TableHead>
-        <TableHeadCell>
-        </TableHeadCell>
-        <TableHeadCell>#</TableHeadCell>
-        <TableHeadCell>Task</TableHeadCell>
-        <TableHeadCell>Status</TableHeadCell>
-        <TableHeadCell>
-            <span class="sr-only">Edit</span>
-        </TableHeadCell>
-        <TableHeadCell>
-            <span class="sr-only">Delete</span>
-        </TableHeadCell>
-    </TableHead>
+{ #if $filterTasksList.length > 0 }    
+    <Table hoverable={true} shadow >
+        <TableHead>
+            <TableHeadCell>
+            </TableHeadCell>
+            <TableHeadCell>#</TableHeadCell>
+            <TableHeadCell>Task</TableHeadCell>
+            <TableHeadCell>Status</TableHeadCell>
+            <TableHeadCell>
+                <span class="sr-only">Edit</span>
+            </TableHeadCell>
+            <TableHeadCell>
+                <span class="sr-only">Delete</span>
+            </TableHeadCell>
+        </TableHead>
+    
     <TableBody tableBodyClass="divide-y cursor-pointer">
         { #each $filterTasksList as task (task.id) }
             <TableBodyRow key={ task.id } class="{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" on:click={(e) => handleStatus(e, task.id, task.status)}>
@@ -141,9 +143,21 @@
             {/each }
     </TableBody>
 </Table>
+{:else}
+<div class="box">
+    <p>Add your first task...</p>
+</div>
+{/if}
 </main>
 
 <style>
+
+    .box{
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .progress{
         text-decoration: underline;
         text-decoration-color: yellow;

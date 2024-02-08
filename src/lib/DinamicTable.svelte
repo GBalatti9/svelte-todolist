@@ -1,8 +1,5 @@
 <script>
-    import { Card, TableSearch } from "flowbite-svelte";
     import { tasks } from "../stores/store";
-    import { crossfade, fade } from "svelte/transition";
-    import { flip } from "svelte/animate";
     import { TaskList } from ".";
 
     let status = ["Tasks", "In Progress", "Done"];
@@ -12,8 +9,8 @@
     $: doneTasks = $tasks.filter((task) => task.status === "Done"); // []
 
     const handleDelete = ( id ) => {
-        console.log(id);
-        return $tasks = $tasks.filter(( task ) => task.id !== id);
+        $tasks = $tasks.filter(( task ) => task.id !== id);
+        localStorage.setItem('tasks', JSON.stringify($tasks));
     }
 
     const handleEdit = (id) => {
@@ -21,8 +18,8 @@
             ...task,
             editing: task.id === id ? true : false
         }))
-        console.log(newTasksEditing);
         tasks.set(newTasksEditing);
+        localStorage.setItem('tasks', JSON.stringify($tasks));
     }
 
     const handleStatus = (id, value) => {
@@ -31,7 +28,8 @@
             editing: false,
             status: task.id === id ? value : task.status
         }))
-        tasks.set(newTasks)
+        tasks.set(newTasks);
+        localStorage.setItem('tasks', JSON.stringify($tasks));
     }
 </script>
 
@@ -40,13 +38,13 @@
         <TaskList 
             { item } 
             tasksLists = { item === 'Tasks' 
-                        ? tasksToStart
-                        : item === 'In Progress' 
-                            ? inProgressTasks
-                        : doneTasks } 
-            onDelete={ handleDelete }
-            onStatus={ handleStatus }
-            onEdit={ handleEdit }
+                            ? tasksToStart
+                            : item === 'In Progress' 
+                                ? inProgressTasks
+                            : doneTasks } 
+            onDelete   = { handleDelete }
+            onStatus   = { handleStatus }
+            onEdit     = { handleEdit }
             />
     { /each }
 </main>
