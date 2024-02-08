@@ -1,7 +1,9 @@
 <script>
     import { Button, Card, Helper, Input, Select } from "flowbite-svelte";
     import { tasks } from "../stores/store";
+    import { createEventDispatcher } from "svelte";
 
+    const dispatch = createEventDispatcher();
     const statusList = [ 'Done', 'In Progress', 'To Start'];
 
     let select = '';
@@ -11,6 +13,11 @@
     let keyPressed = false;
     let idIsSet = false;
     let taskId = Number('');
+
+    const switchTable = ({ target }) => {
+        // console.log(target.value);
+        dispatch('switch', target.value)
+    }
 
     const handleInputChange = ({ target }) => {
 
@@ -83,5 +90,5 @@
     </div>
         <Button type="submit" outline color="primary" class="mb-2">Add</Button>
     </form>
-    <Button outline color="primary">Change view</Button>
+    <Button outline color="primary" value="true" on:click={(e) => switchTable(e) }>Change view</Button>
 </Card>
