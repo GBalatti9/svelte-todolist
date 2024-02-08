@@ -10,7 +10,9 @@
     $: inProgressTasks = $tasks.filter((task) => task.status === "In Progress"); // []
     $: doneTasks = $tasks.filter((task) => task.status === "Done"); // []
 
-    const move = (item) => {
+    const move = (item, { target }) => {
+        if (target.name === 'button') return;
+
         let newTasks = $tasks.map(( task ) => ({
             ...task,
             status: 
@@ -18,7 +20,7 @@
                     ? item.status === 'To Start'
                     ? 'In Progress'
                     : item.status === 'Done'
-                        ? 'To start'
+                        ? 'To Start'
                         : 'Done'
                     : task.status
         }))
@@ -26,8 +28,13 @@
         tasks.set(newTasks);
     }
 
+    const handleDelete = ( id ) => {
+        console.log(id);
+        return $tasks = $tasks.filter(( task ) => task.id !== id);
+    }
+
     const [send, receive] = crossfade({
-        duration: 2000,
+        duration: 1000,
     });
 </script>
 
@@ -48,18 +55,18 @@
                     <Card
                         color="primary"
                         class="my-3 cursor-pointer"
-                        on:click={() => move(task)}
+                        on:click={(e) => move(task, e)}
                     >
                         <h6 class="font-bold text-white-900 mb-2">
                             {task.task}
                         </h6>
                         <div>
                             <button
-                                class="border border-primary-500 px-2 rounded btn"
+                                class="border border-primary-500 px-2 rounded btn" name="button"
                                 >Edit</button
                             >
                             <button
-                                class="border border-primary-500 px-2 rounded btn"
+                                class="border border-primary-500 px-2 rounded btn" name="button" on:click={() => handleDelete(task.id) }
                                 >Delete</button
                             >
                         </div>
@@ -82,7 +89,7 @@
                             <Card
                                 color="primary"
                                 class="my-3 cursor-pointer"
-                                on:click={() => move(task)}
+                                on:click={(e) => move(task, e)}
                             >
                             <h6 class="font-bold text-white-900 mb-2">
                                 {task.task}
@@ -93,7 +100,7 @@
                                     >Edit</button
                                 >
                                 <button
-                                    class="border border-primary-500 px-2 rounded btn"
+                                    class="border border-primary-500 px-2 rounded btn" on:click={() => handleDelete(task.id) }
                                     >Delete</button
                                 >
                             </div>
@@ -108,7 +115,7 @@
                         <Card
                             color="primary"
                             class="my-3 cursor-pointer"
-                            on:click={() => move(task)}
+                            on:click={(e) => move(task, e)}
                         >
                         <h6 class="font-bold text-white-900 mb-2">
                             {task.task}
