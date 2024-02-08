@@ -6,7 +6,10 @@
 
     export let tasksLists = [];
     export let onDelete;
+    export let onEdit;
+    export let onStatus;
     export let item;
+    let status = ["To Start", "In Progress", "Done"];
 
     const move = (item, { target }) => {
         if (target.name === 'button') return;
@@ -44,14 +47,26 @@
                             {task.task}
                         </h6>
                         <div>
-                            <button
-                                class="border border-primary-500 px-2 rounded btn" name="button"
-                                >Edit</button
-                            >
-                            <button
-                                class="border border-primary-500 px-2 rounded btn" name="button" on:click={() => onDelete(task.id) }
-                                >Delete</button
-                            >
+                            { #if task.editing }
+                                { #each status as item }
+                                    <button 
+                                        class="border border-primary-500 px-2 rounded btn" 
+                                        name="button" 
+                                        on:click={() => onStatus(task.id, item) }
+                                        >
+                                        {item}
+                                    </button>
+                                    { /each }
+                            {:else}
+                                <button
+                                    class="border border-primary-500 px-2 rounded btn" name="button" on:click={() => onEdit(task.id)}
+                                    >Edit</button
+                                >
+                                <button
+                                    class="border border-primary-500 px-2 rounded btn" name="button" on:click={() => onDelete(task.id) }
+                                    >Delete</button
+                                >
+                            { /if }
                         </div>
                     </Card>
             </div>

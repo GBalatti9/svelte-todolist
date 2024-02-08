@@ -15,6 +15,24 @@
         console.log(id);
         return $tasks = $tasks.filter(( task ) => task.id !== id);
     }
+
+    const handleEdit = (id) => {
+        let newTasksEditing = $tasks.map(( task ) => ({
+            ...task,
+            editing: task.id === id ? true : false
+        }))
+        console.log(newTasksEditing);
+        tasks.set(newTasksEditing);
+    }
+
+    const handleStatus = (id, value) => {
+        let newTasks = $tasks.map(( task ) => ({
+            ...task,
+            editing: false,
+            status: task.id === id ? value : task.status
+        }))
+        tasks.set(newTasks)
+    }
 </script>
 
 <main class="grid grid-cols-3 text-center">
@@ -26,6 +44,9 @@
                         : item === 'In Progress' 
                             ? inProgressTasks
                         : doneTasks } 
-            onDelete={ handleDelete }/>
+            onDelete={ handleDelete }
+            onStatus={ handleStatus }
+            onEdit={ handleEdit }
+            />
     { /each }
 </main>
