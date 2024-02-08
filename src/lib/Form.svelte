@@ -8,7 +8,6 @@
 
     let select = '';
     let value = '';
-    let message = '';
 
     let keyPressed = false;
     let idIsSet = false;
@@ -31,7 +30,7 @@
                 let newTask = {
                     id: taskId,
                     task: value,
-                    status: '',
+                    status: 'To Start',
                     editing: false,
                 }
                 tasks.update(( prevTasks ) => ([...prevTasks, newTask]));
@@ -43,7 +42,7 @@
                 ...task,
                 task: task.id === taskId ? value : task.task 
             }))
-            console.log('aca');
+            console.log(newTasks);
             tasks.set(newTasks)
         }
     }
@@ -57,9 +56,6 @@
             tasks.set(newTasks);
         }
 
-        if (value.length > 0 && select.length > 0) {
-            return message = "Don't forget to save changes"
-        }
     }
 
     const handleSubmit = () => {
@@ -68,7 +64,6 @@
         value = '';
         keyPressed = false;
         idIsSet = false;
-        message = '';
     }
 
 
@@ -86,7 +81,7 @@
         </Select>
     </div>
     <div class="mb-4">
-        <Helper>{ message }</Helper>
+        <Helper>Save changes by clicking Add</Helper>
     </div>
         <Button type="submit" outline color="primary" class="mb-2">Add</Button>
     </form>
