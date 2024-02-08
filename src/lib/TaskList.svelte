@@ -4,15 +4,13 @@
     import { crossfade } from "svelte/transition";
     import { flip } from "svelte/animate";
 
+    export let tasksLists = [];
+    export let onDelete;
     export let item;
-
-    $: tasksToStart = $tasks.filter( task => task.status === 'To Start' || task.status === '' ); // [{...}]
-    $: inProgressTasks = $tasks.filter((task) => task.status === "In Progress"); // []
-    $: doneTasks = $tasks.filter((task) => task.status === "Done"); // []
 
     const move = (item, { target }) => {
         if (target.name === 'button') return;
-
+        console.log(item);
         let newTasks = $tasks.map(( task ) => ({
             ...task,
             status: 
@@ -24,13 +22,8 @@
                         : 'Done'
                     : task.status
         }))
-
+        console.log(newTasks);
         tasks.set(newTasks);
-    }
-
-    const handleDelete = ( id ) => {
-        console.log(id);
-        return $tasks = $tasks.filter(( task ) => task.id !== id);
     }
 
     const [send, receive] = crossfade({
@@ -45,15 +38,13 @@
         class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
     >
         { item }
-    </h5>
-    {#if item === 'Tasks'}        
-        {#each tasksToStart as task (task.id)}
+    </h5>        
+        {#each tasksLists as task (task.id)}
             <div
                 in:receive={{ key: task.id }}
                 out:send={{ key: task.id }}
                 animate:flip
             >
-                {#if task.status === "To Start" || task.status === ""}
                     <Card
                         color="primary"
                         class="my-3 cursor-pointer"
@@ -68,16 +59,15 @@
                                 >Edit</button
                             >
                             <button
-                                class="border border-primary-500 px-2 rounded btn" name="button" on:click={() => handleDelete(task.id) }
+                                class="border border-primary-500 px-2 rounded btn" name="button" on:click={() => onDelete(task.id) }
                                 >Delete</button
                             >
                         </div>
                     </Card>
-                {/if}
             </div>
         {/each}
-    {/if}
 </Card>
+
 <!-- {#each status as item}
     <div>
         <Card class="drop-shadow-xl w-10/12">
