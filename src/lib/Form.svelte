@@ -3,56 +3,57 @@
     import { tasks } from "../stores/store";
     import { createEventDispatcher } from "svelte";
 
-    const dispatch = createEventDispatcher();
+    const dispatch   = createEventDispatcher();
     const statusList = [ 'Done', 'In Progress', 'To Start'];
 
     let select = '';
-    let value = '';
+    let value  = '';
 
     let keyPressed = false;
-    let idIsSet = false;
-    let taskId = Number('');
+    let idIsSet    = false;
+    let taskId     = Number('');
 
     const switchTable = ({ target }) => {
-        // console.log(target.value);
         dispatch('switch', target.value)
     }
 
     const handleInputChange = ({ target }) => {
 
         const { name, value } = target;
+
         if (!idIsSet) {
             taskId = $tasks.length;
             idIsSet = true;
         }
+
         if (name === 'input') {
             if (!keyPressed) {
                 let newTask = {
-                    id: taskId,
-                    task: value,
-                    status: 'To Start',
-                    editing: false,
+                    id      : taskId,
+                    task    : value,
+                    status  : 'To Start',
+                    editing : false,
                 }
+
                 tasks.update(( prevTasks ) => ([...prevTasks, newTask]));
                 keyPressed = true;
                 idIsSet = true;
+
         } else {
 
             let newTasks = $tasks.map(( task ) => ({
                 ...task,
                 task: task.id === taskId ? value : task.task 
             }))
-            console.log(newTasks);
+
             tasks.set(newTasks)
         }
     }
         if (name === 'select') {
-            console.log(name, value);
             let newTasks = $tasks.map(( task ) => ({
                 ...task,
                 status: task.id === taskId ? value : task.status,
             }))
-
             tasks.set(newTasks);
         }
 
@@ -60,10 +61,10 @@
 
     const handleSubmit = () => {
         localStorage.setItem('tasks', JSON.stringify($tasks));
-        select = '';
-        value = '';
-        keyPressed = false;
-        idIsSet = false;
+        select      = '';
+        value       = '';
+        keyPressed  = false;
+        idIsSet     = false;
     }
 
 
