@@ -66,15 +66,7 @@
 
 <main>
     { #if $filterTasksList.length > 0 }    
-        <StaticTableComponent 
-            { filterTasksList } 
-            { handleClose } 
-            { handleDelete } 
-            { handleSave } 
-            { handleEdit } 
-            { handleInput } 
-            { handleStatus }
-            />
+        <StaticTableComponent />
     {:else}
     <div class="box">
         <p>Add your first task...</p>

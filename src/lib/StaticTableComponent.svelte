@@ -1,19 +1,9 @@
 <script>
-        import {
-        Table,
-        TableBody,
-        TableBodyCell,
-        TableBodyRow,
-        TableHead,
-        TableHeadCell,
-        Checkbox,
-        Button,
-        Input,
-        ButtonGroup,
-        Toast,
-    } from "flowbite-svelte";
+    import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox, Button, Input, ButtonGroup } from "flowbite-svelte";
 
-    export let filterTasksList, handleStatus, handleInput, handleSave, handleClose, handleDelete, handleEdit;
+    import { filterTasksList, taskCustomStore } from "../stores/store";
+
+    const { handleDelete, handleEdit, handleStatus, handleInput, handleClose, handleSave } = taskCustomStore;
 </script>
 
 <Table hoverable={true} shadow>
@@ -29,19 +19,19 @@
     </TableHead>
 
 <TableBody tableBodyClass="divide-y cursor-pointer">
-    { #each $filterTasksList as task (task.id) }
-        <TableBodyRow key={ task.id } class="{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" on:click={(e) => handleStatus(e, task.id, task.status)}>
+    { #each $taskCustomStore as task (task.id) }
+        <TableBodyRow key={ task.id } class="{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" on:click={(e) => handleStatus( e, task.id )}>
             <TableBodyCell>
                 { #if task.status === 'Done'}
-                    <Checkbox on:change={(e) => handleStatus(e, task.id, task.status) } checked class="cursor-pointer"/>
+                    <Checkbox on:change={(e) => handleStatus(e, task.id ) } checked class="cursor-pointer"/>
                 { :else }
-                    <Checkbox on:change={(e) => handleStatus(e, task.id, task.status) } class="cursor-pointer"/>
+                    <Checkbox on:change={(e) => handleStatus(e, task.id ) } class="cursor-pointer"/>
                 { /if }
             </TableBodyCell>
             <TableBodyCell style="width:10px;">{ task.id }</TableBodyCell>
             { #if task.editing}
                 <TableBodyCell style="max-width: 130px;">
-                    <Input value={ task.task } name="task" on:input={(e) => handleInput(e, task.task, task.id) } style="cursor:text"/>
+                    <Input value={ task.task } name="task" on:input={(e) => handleInput(e, task.id) } style="cursor:text"/>
                 </TableBodyCell>
 
             { :else }
