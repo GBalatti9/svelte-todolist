@@ -33,9 +33,6 @@
     $: if (input) {
         input.focus();
     }
-    const handleInput = () => {
-        console.log(input);
-    }
 </script>
 
 
@@ -61,7 +58,6 @@
                             color="primary"
                             bind:this={ input } 
                             bind:value={ task.task } 
-                            on:input={ handleInput }
                             in:fade
                             >
                     { :else }                    
