@@ -33,7 +33,7 @@
     }
 </script>
 
-<main class="grid grid-cols-3 text-center">
+<main class="grid grid-cols-1 gap-4 lg:grid-cols-3 text-center">
     { #each status as item }
         <TaskList 
             { item } 
