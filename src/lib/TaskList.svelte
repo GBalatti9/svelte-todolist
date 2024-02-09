@@ -1,15 +1,14 @@
 <script>
     import { Card } from "flowbite-svelte";
-    import { tasks } from "../stores/store";
+    import { tasks, taskCustomStore } from "../stores/store";
     import { flip } from "svelte/animate";
     import { fade } from "svelte/transition";
 
     export let tasksLists = [];
-    export let onDelete;
-    export let onEdit;
-    export let onStatus;
     export let item;
     let status = ["To Start", "In Progress", "Done"];
+
+    const { handleDelete, handleEdit, handleStatus } = taskCustomStore;
 
     const move = (item, { target }) => {
         if (target.name === 'button' || target.name === 'Task') return;
@@ -70,8 +69,9 @@
                                 { #each status as item }
                                     <button 
                                         class    = "border border-primary-500 px-2 rounded btn mt-2" 
-                                        name     = "button" 
-                                        on:click = {() => onStatus( task.id, item )}
+                                        
+                                        value    =  { item }
+                                        on:click = {(e) => handleStatus( e, task.id )}
                                         in:fade
                                         >
                                         { item }
@@ -81,13 +81,13 @@
                                 <button
                                     name     = "button" 
                                     class    = "border border-primary-500 px-2 rounded btn" 
-                                    on:click = {() => onEdit( task.id )}
+                                    on:click = {() => handleEdit( task.id )}
                                     >Edit</button
                                 >
                                 <button
                                     name     = "button" 
                                     class    = "border border-primary-500 px-2 rounded btn" 
-                                    on:click = {() => onDelete( task.id )}
+                                    on:click = {() => handleDelete( task.id )}
                                     >Delete</button
                                 >
                             { /if }

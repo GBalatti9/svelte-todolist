@@ -23,8 +23,10 @@ const tasksStore = () => {
     }
 
     const handleStatus = ( { target }, id ) => {
+        console.log('estoy aca', target, id);
         if( target.name === 'button' || target.name === 'task') return;
         update( tasks => {
+            console.log({tasks});
             return tasks.map( task => {
                 return {
                     ...task,

@@ -1,17 +1,11 @@
 <script>
-    import { filterTasksList, tasks } from "../stores/store";
+    import { filterTasksList, taskCustomStore, tasks } from "../stores/store";
     import { TaskList } from ".";
-
     let status = ["Tasks", "In Progress", "Done"];
 
-    $: tasksToStart = $filterTasksList.filter( task => task.status === 'To Start' || task.status === '' ); // [{...}]
-    $: inProgressTasks = $filterTasksList.filter((task) => task.status === "In Progress"); // []
-    $: doneTasks = $filterTasksList.filter((task) => task.status === "Done"); // []
-
-    const handleDelete = ( id ) => {
-        $tasks = $tasks.filter(( task ) => task.id !== id);
-        localStorage.setItem('tasks', JSON.stringify($tasks));
-    }
+    $: tasksToStart = $taskCustomStore.filter( task => task.status === 'To Start' || task.status === '' ); // [{...}]
+    $: inProgressTasks = $taskCustomStore.filter((task) => task.status === "In Progress"); // []
+    $: doneTasks = $taskCustomStore.filter((task) => task.status === "Done"); // []
 
     const handleEdit = (id) => {
         let newTasksEditing = $tasks.map(( task ) => ({
@@ -42,9 +36,6 @@
                             : item === 'In Progress' 
                                 ? inProgressTasks
                             : doneTasks } 
-            onDelete   = { handleDelete }
-            onStatus   = { handleStatus }
-            onEdit     = { handleEdit }
             />
     { /each }
 </main>
