@@ -14,14 +14,13 @@
     } from "flowbite-svelte";
 
     import { tasks, filterTasksList } from "../stores/store";
-    import { fade } from "svelte/transition";
 
     const handleStatus = ( { target }, id, actualStatus ) => {
         if( target.name === 'button' || target.name === 'task') return;
         console.log({actualStatus});
         let newTasksStatus = $tasks.map(( task ) => ({
             ...task,
-            editing: task.id === id ? task.editing = false : task.edting,
+            editing: task.id === id ? false : task.edting,
             status: task.id === id ? task.status === 'Done' ? 'In Progress' : 'Done' : task.status,
             // status: task.id === id ? task.status === 'Done' ? actualStatus : 'Done' : task.status,
         }))
@@ -79,7 +78,7 @@
 
 <main>
 { #if $filterTasksList.length > 0 }    
-    <Table hoverable={true} shadow >
+    <Table hoverable={true} shadow>
         <TableHead>
             <TableHeadCell>
             </TableHeadCell>
@@ -88,9 +87,6 @@
             <TableHeadCell>Status</TableHeadCell>
             <TableHeadCell>
                 <span class="sr-only">Edit</span>
-            </TableHeadCell>
-            <TableHeadCell>
-                <span class="sr-only">Delete</span>
             </TableHeadCell>
         </TableHead>
     
@@ -132,12 +128,10 @@
                         <Button name="button" on:click={() => handleEdit( task.id ) }>
                             Edit
                         </Button>
+                        <Button name="button" on:click={() => handleDelete( task.id ) }>
+                            Delete
+                        </Button>
                     { /if }
-                </TableBodyCell>
-                <TableBodyCell>
-                    <Button name="button" on:click={() => handleDelete( task.id ) }>
-                        Delete
-                    </Button>
                 </TableBodyCell>
             </TableBodyRow>
             {/each }
