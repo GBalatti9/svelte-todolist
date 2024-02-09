@@ -1,12 +1,12 @@
 <script>
-    import { tasks } from "../stores/store";
+    import { filterTasksList, tasks } from "../stores/store";
     import { TaskList } from ".";
 
     let status = ["Tasks", "In Progress", "Done"];
 
-    $: tasksToStart = $tasks.filter( task => task.status === 'To Start' || task.status === '' ); // [{...}]
-    $: inProgressTasks = $tasks.filter((task) => task.status === "In Progress"); // []
-    $: doneTasks = $tasks.filter((task) => task.status === "Done"); // []
+    $: tasksToStart = $filterTasksList.filter( task => task.status === 'To Start' || task.status === '' ); // [{...}]
+    $: inProgressTasks = $filterTasksList.filter((task) => task.status === "In Progress"); // []
+    $: doneTasks = $filterTasksList.filter((task) => task.status === "Done"); // []
 
     const handleDelete = ( id ) => {
         $tasks = $tasks.filter(( task ) => task.id !== id);
