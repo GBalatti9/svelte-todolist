@@ -23,15 +23,15 @@ const tasksStore = () => {
     }
 
     const handleStatus = ( { target }, id ) => {
-        console.log('estoy aca', target, id);
+        console.log('estoy aca', target.value, id);
         if( target.name === 'button' || target.name === 'task') return;
         update( tasks => {
             console.log({tasks});
             return tasks.map( task => {
                 return {
                     ...task,
-                    editing: false, // no tiene sentido usar esta condicion task.id === id ? false : task.edting ya que task.editing es false en todos
-                    status: task.id === id ? task.status === 'Done' ? 'In Progress' : 'Done' : task.status,
+                    editing: false, 
+                    status: task.id === id ? target.value : task.status,
                 }
             })
         })

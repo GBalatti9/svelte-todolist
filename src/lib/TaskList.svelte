@@ -10,23 +10,6 @@
 
     const { handleDelete, handleEdit, handleStatus } = taskCustomStore;
 
-    const move = (item, { target }) => {
-        if (target.name === 'button' || target.name === 'Task') return;
-        let newTasks = $tasks.map(( task ) => ({
-            ...task,
-            status: 
-                task.id === item.id 
-                    ? item.status === 'To Start'
-                    ? 'In Progress'
-                    : item.status === 'Done'
-                        ? 'To Start'
-                        : 'Done'
-                    : task.status
-        }))
-        tasks.set(newTasks);
-        localStorage.setItem('tasks', JSON.stringify($tasks));
-    }
-
     let input;
 
     $: if (input) {
@@ -47,7 +30,6 @@
                     <Card
                         color    = "primary"
                         class    = "my-3 cursor-pointer"
-                        on:click = {( e ) => move( task, e )}
                     >
                     { #if task.editing }
                         <input 
