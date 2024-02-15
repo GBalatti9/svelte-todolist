@@ -1,6 +1,6 @@
 <script>
     import { Button, Card, Helper, Input, Select } from "flowbite-svelte";
-    import { tasks } from "../stores/store";
+    import { taskCustomStore } from "../stores/store";
     import { createEventDispatcher } from "svelte";
 
     const dispatch   = createEventDispatcher();
@@ -20,9 +20,10 @@
     const handleInputChange = ({ target }) => {
 
         const { name, value } = target;
+        console.log({ name, value });
 
         if (!idIsSet) {
-            taskId = $tasks.length;
+            taskId = $taskCustomStore.length;
             idIsSet = true;
         }
 
@@ -35,32 +36,32 @@
                     editing : false,
                 }
 
-                tasks.update(( prevTasks ) => ([...prevTasks, newTask]));
+                taskCustomStore.update(( prevTasks ) => ([...prevTasks, newTask]));
                 keyPressed = true;
                 idIsSet = true;
 
         } else {
 
-            let newTasks = $tasks.map(( task ) => ({
+            let newTasks = $taskCustomStore.map(( task ) => ({
                 ...task,
                 task: task.id === taskId ? value : task.task 
             }))
-
-            tasks.set(newTasks)
+            console.log({ $taskCustomStore });
+            taskCustomStore.set(newTasks)
         }
     }
         if (name === 'select') {
-            let newTasks = $tasks.map(( task ) => ({
+            let newTasks = $taskCustomStore.map(( task ) => ({
                 ...task,
                 status: task.id === taskId ? value : task.status,
             }))
-            tasks.set(newTasks);
+            taskCustomStore.set(newTasks);
         }
 
     }
 
     const handleSubmit = () => {
-        localStorage.setItem('tasks', JSON.stringify($tasks));
+        localStorage.setItem('tasks', JSON.stringify($taskCustomStore));
         select      = '';
         value       = '';
         keyPressed  = false;

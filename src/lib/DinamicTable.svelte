@@ -7,7 +7,7 @@
     $: inProgressTasks = $taskCustomStore.filter((task) => task.status === "In Progress"); // []
     $: doneTasks = $taskCustomStore.filter((task) => task.status === "Done"); // []
 
-    console.log($taskCustomStore);
+    // console.log({$taskCustomStore});
 
 </script>
 

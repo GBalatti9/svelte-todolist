@@ -10,7 +10,11 @@ const tasksStore = () => {
     const { subscribe, set, update } = writable(getTasksFromLocalStorage())
 
     const handleDelete = ( id ) => {
-        update( tasks => tasks.filter(( task ) => task.id !== id) );        
+        update( tasks => {
+            const newTasks = tasks.filter(( task ) => task.id !== id)
+            localStorage.setItem('tasks', JSON.stringify(newTasks));
+            return newTasks;
+        } );        
     }
 
     const handleEdit = ( id ) => {
@@ -23,17 +27,17 @@ const tasksStore = () => {
     }
 
     const handleStatus = ( { target }, id ) => {
-        console.log('estoy aca', target.value, id);
-        if( target.name === 'button' || target.name === 'task') return;
+        if( target.name === 'button' || target.name === 'task' || target.value === 'on' ) return;
         update( tasks => {
-            console.log({tasks});
-            return tasks.map( task => {
+            const newTasks = tasks.map( task => {
                 return {
                     ...task,
                     editing: false, 
                     status: task.id === id ? target.value : task.status,
                 }
             })
+            localStorage.setItem('tasks', JSON.stringify(newTasks));
+            return newTasks;
         })
     }
 
