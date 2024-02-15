@@ -3,7 +3,7 @@
 
     import { filterTasksList, taskCustomStore } from "../stores/store";
 
-    const { handleDelete, handleEdit, handleStatus, handleInput, handleClose, handleSave } = taskCustomStore;
+    const { handleDelete, handleEdit, handleStatus, handleInput, handleClose, handleSave, handleChangeStatus } = taskCustomStore;
     const status = ['To Start', 'In Progress', 'Done'];
 </script>
 
@@ -47,7 +47,7 @@
             {/if }
             <TableBodyCell style="max-width:10px;">
                 {#if task.editing}
-                    <select name="select">
+                    <select name="select" on:change={(e) => handleChangeStatus( task.id, e )}>
                         {#each status as element}
                             {#if element === task.status}
                                 <option value="{element}" selected>{element}</option>

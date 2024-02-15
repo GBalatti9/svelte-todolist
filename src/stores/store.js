@@ -27,7 +27,6 @@ const tasksStore = () => {
     }
 
     const handleStatus = ( { target }, id ) => {
-        console.log(target.name);
         if( target.name === 'button' || target.name === 'task' || target.value === 'on' || target.name === 'select' ) return;
         update( tasks => {
             const newTasks = tasks.map( task => {
@@ -61,6 +60,20 @@ const tasksStore = () => {
         })
     }
 
+    const handleChangeStatus = (id, { target }) => {
+        update(( tasks ) => {
+            const newTasks = tasks.map(( task ) => {
+                return {
+                    ...task,
+                    editing: false,
+                    status: task.id === id ? target.value : task.status
+                }
+            })
+            localStorage.setItem('tasks', JSON.stringify(newTasks));
+            return newTasks;
+        })
+    }
+
     const handleClose = ( id ) => {
         update(tasks => tasks.map(( task ) => ({
             ...task,
@@ -80,6 +93,7 @@ const tasksStore = () => {
         handleInput,
         handleClose,
         handleSave,
+        handleChangeStatus,
     }
 };
 
