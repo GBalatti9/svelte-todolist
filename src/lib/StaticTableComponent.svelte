@@ -4,6 +4,7 @@
     import { filterTasksList, taskCustomStore } from "../stores/store";
 
     const { handleDelete, handleEdit, handleStatus, handleInput, handleClose, handleSave } = taskCustomStore;
+    const status = ['To Start', 'In Progress', 'Done'];
 </script>
 
 <Table hoverable={true} shadow>
@@ -23,7 +24,7 @@
         <TableBodyRow 
             key = { task.id } 
             class = "{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" 
-            on:click={(e) => handleStatus( e, task.id )}
+            on:click={( e ) => handleStatus( e, task.id )}
             >
             <TableBodyCell>
                 { #if task.status === 'Done'}
@@ -33,7 +34,7 @@
                 { /if }
             </TableBodyCell>
             <TableBodyCell style="width:10px;">{ task.id }</TableBodyCell>
-            { #if task.editing}
+            { #if task.editing }
                 <TableBodyCell style="max-width: 130px;">
                     <Input value={ task.task } name="task" on:input={(e) => handleInput(e, task.id) } style="cursor:text"/>
                 </TableBodyCell>
@@ -41,15 +42,30 @@
             { :else }
                 <TableBodyCell style="max-width: 100px; overflow: hidden; text-overflow:ellipsis">
                     <!--  overflow-x:scroll; -->
-                    {task.task}
+                    { task.task }
                 </TableBodyCell>
             {/if }
             <TableBodyCell style="max-width:10px;">
-                <span 
-                    class:progress = { task.status === 'In Progress' } 
-                    class:done     = { task.status === 'Done' }
-                    class:start    = { task.status === 'To Start' }
-                    >{ task.status }</span></TableBodyCell>
+                {#if task.editing}
+                    <select name="select">
+                        {#each status as element}
+                            {#if element === task.status}
+                                <option value="{element}" selected>{element}</option>
+                            { :else }
+                                <option value="{element}">{element}</option>
+                            {/if}
+                        {/each}
+                    </select>
+                    { :else }
+                    <span 
+                        class:progress = { task.status === 'In Progress' } 
+                        class:done     = { task.status === 'Done' }
+                        class:start    = { task.status === 'To Start' }
+                        >
+                        { task.status }
+                    </span>
+                    {/if}
+                </TableBodyCell>
             <TableBodyCell>
                 { #if task.editing }
                 <ButtonGroup>

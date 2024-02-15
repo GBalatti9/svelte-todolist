@@ -27,7 +27,8 @@ const tasksStore = () => {
     }
 
     const handleStatus = ( { target }, id ) => {
-        if( target.name === 'button' || target.name === 'task' || target.value === 'on' ) return;
+        console.log(target.name);
+        if( target.name === 'button' || target.name === 'task' || target.value === 'on' || target.name === 'select' ) return;
         update( tasks => {
             const newTasks = tasks.map( task => {
                 return {
