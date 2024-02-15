@@ -1,10 +1,14 @@
 <script>
-    import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox, Button, Input, ButtonGroup } from "flowbite-svelte";
+    import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox, Button, Input, ButtonGroup, Select } from "flowbite-svelte";
 
     import { filterTasksList, taskCustomStore } from "../stores/store";
 
     const { handleDelete, handleEdit, handleStatus, handleInput, handleClose, handleSave, handleChangeStatus } = taskCustomStore;
-    const status = ['To Start', 'In Progress', 'Done'];
+    const status = [
+        { value:'To Start', name:'To Start' }, 
+        { value:'In Progress', name:'In Progress' }, 
+        { value:'Done', name:'Done' }
+        ];
 </script>
 
 <Table hoverable={true} shadow>
@@ -47,15 +51,7 @@
             {/if }
             <TableBodyCell style="max-width:10px;">
                 {#if task.editing}
-                    <select name="select" on:change={(e) => handleChangeStatus( task.id, e )}>
-                        {#each status as element}
-                            {#if element === task.status}
-                                <option value="{element}" selected>{element}</option>
-                            { :else }
-                                <option value="{element}">{element}</option>
-                            {/if}
-                        {/each}
-                    </select>
+                    <Select items={ status } name="select" on:change={(e) => handleChangeStatus( task.id, e )}></Select>
                     { :else }
                     <span 
                         class:progress = { task.status === 'In Progress' } 

@@ -65,7 +65,6 @@ const tasksStore = () => {
             const newTasks = tasks.map(( task ) => {
                 return {
                     ...task,
-                    editing: false,
                     status: task.id === id ? target.value : task.status
                 }
             })
