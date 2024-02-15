@@ -77,8 +77,6 @@ const tasksStore = () => {
 
 export const taskCustomStore = tasksStore();
 
-
-
 export const filterTasks = writable('');
 
 export const filterTasksList = derived( 

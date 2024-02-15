@@ -2,7 +2,7 @@
     import { Button, Card, Input, Label } from "flowbite-svelte";
     import { tasks, filterTasks, filterTasksList } from "../stores/store";
 
-    let filterValue = ''
+    let filterValue = '';
     const filteredTasks = () => {
         filterTasks.set(filterValue)
     }

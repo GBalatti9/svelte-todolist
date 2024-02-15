@@ -19,7 +19,7 @@
     </TableHead>
 
 <TableBody tableBodyClass="divide-y cursor-pointer">
-    { #each $taskCustomStore as task (task.id) }
+    { #each $filterTasksList as task (task.id) }
         <TableBodyRow key={ task.id } class="{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" on:click={(e) => handleStatus( e, task.id )}>
             <TableBodyCell>
                 { #if task.status === 'Done'}
