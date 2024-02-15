@@ -19,8 +19,7 @@
 
     const handleInputChange = ({ target }) => {
 
-        const { name, value } = target;
-        console.log({ name, value });
+        let { name, value } = target;
 
         if (!idIsSet) {
             taskId = $taskCustomStore.length;
@@ -46,7 +45,6 @@
                 ...task,
                 task: task.id === taskId ? value : task.task 
             }))
-            console.log({ $taskCustomStore });
             taskCustomStore.set(newTasks)
         }
     }
@@ -57,15 +55,21 @@
             }))
             taskCustomStore.set(newTasks);
         }
-
+        
     }
-
+    
     const handleSubmit = () => {
-        localStorage.setItem('tasks', JSON.stringify($taskCustomStore));
+        let newTasks = $taskCustomStore.map(( element ) => ({
+            ...element,
+            task: element.id === ($taskCustomStore.length - 1) ? element.task.charAt(0).toUpperCase() + element.task.slice(1).toLowerCase() : element.task
+        }))
+        taskCustomStore.set(newTasks);
+        
         select      = '';
         value       = '';
         keyPressed  = false;
         idIsSet     = false;
+        localStorage.setItem('tasks', JSON.stringify(newTasks));
     }
 
 

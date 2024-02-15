@@ -15,7 +15,7 @@
     <Form on:switch={ toggleSwitch } />
     <FindTask />
 </section>
-<section class="w-full col-span-2 p-2 mt-4">
+<section class="border-slate-950 col-span-3 p-2 mt-4">
     { #if !switchTable}
         <StaticTable />
     { :else }

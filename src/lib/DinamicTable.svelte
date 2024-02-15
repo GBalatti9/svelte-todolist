@@ -3,9 +3,9 @@
     import { TaskList } from ".";
     let status = ["Tasks", "In Progress", "Done"];
 
-    $: tasksToStart = $filterTasksList.filter( task => task.status === 'To Start' || task.status === '' ); // [{...}]
-    $: inProgressTasks = $filterTasksList.filter((task) => task.status === "In Progress"); // []
-    $: doneTasks = $filterTasksList.filter((task) => task.status === "Done"); // []
+    $: tasksToStart = $taskCustomStore.filter( task => task.status === 'To Start' || task.status === '' ); // [{...}]
+    $: inProgressTasks = $taskCustomStore.filter((task) => task.status === "In Progress"); // []
+    $: doneTasks = $taskCustomStore.filter((task) => task.status === "Done"); // []
 
     // console.log({$taskCustomStore});
 
