@@ -23,7 +23,7 @@
         <TableBodyRow 
             key = { task.id } 
             class = "{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" 
-            on:click={(e) => handleStatus( e, task.id, task.status )}
+            on:click={(e) => handleStatus( e, task.id )}
             >
             <TableBodyCell>
                 { #if task.status === 'Done'}
@@ -57,10 +57,10 @@
                     <Button name="button" outline color="primary" on:click={() => handleClose( task.id ) }>Close</Button>
                 </ButtonGroup>
                 { :else }
-                    <Button name="button" on:click={() => handleEdit( task.id ) }>
+                    <Button name="button" on:click={() => handleEdit( task.id ) } disabled={ task.status === 'Done' }>
                         Edit
                     </Button>
-                    <Button name="button" on:click={() => handleDelete( task.id ) }>
+                    <Button name="button" on:click={() => handleDelete( task.id ) } disabled={ task.status === 'Done' }>
                         Delete
                     </Button>
                 { /if }
