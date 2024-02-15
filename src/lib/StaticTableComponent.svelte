@@ -20,7 +20,11 @@
 
 <TableBody tableBodyClass="divide-y cursor-pointer">
     { #each $filterTasksList as task (task.id) }
-        <TableBodyRow key={ task.id } class="{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" on:click={(e) => handleStatus( e, task.id )}>
+        <TableBodyRow 
+            key = { task.id } 
+            class = "{task.status === 'Done' ? "line-through bg-gray-200" : ''} cursor-pointer" 
+            on:click={(e) => handleStatus( e, task.id, task.status )}
+            >
             <TableBodyCell>
                 { #if task.status === 'Done'}
                     <Checkbox on:change={(e) => handleStatus(e, task.id ) } checked class="cursor-pointer"/>

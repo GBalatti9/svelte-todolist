@@ -33,7 +33,7 @@ const tasksStore = () => {
                 return {
                     ...task,
                     editing: false, 
-                    status: task.id === id ? target.value : task.status,
+                    status: task.id === id ? target.value === undefined ? 'Done' : target.value : task.status,
                 }
             })
             localStorage.setItem('tasks', JSON.stringify(newTasks));
