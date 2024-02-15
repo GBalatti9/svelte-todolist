@@ -80,8 +80,8 @@ export const taskCustomStore = tasksStore();
 export const filterTasks = writable('');
 
 export const filterTasksList = derived( 
-    [ tasks, filterTasks ], ([ $tasks, $filterTasks ]) => {
-        return $tasks.filter(( task ) => (task.task).toLowerCase().includes(($filterTasks).toLowerCase()));
+    [ taskCustomStore, filterTasks ], ([ $taskCustomStore, $filterTasks ]) => {
+        return $taskCustomStore.filter(( task ) => (task.task).toLowerCase().includes(($filterTasks).toLowerCase()));
 
     } )
 
